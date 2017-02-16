@@ -18,6 +18,11 @@ var bot = new builder.UniversalBot(connector);
 bot.dialog('/', function(session) {
     //session.send('You said ' + session.message.text);
 
+    var stateObject = {
+        address: session.message.address,
+        text: session.message.text
+    };
+
     luis.getIntent(session.message.text, function(err, response) {
         var intent = response.topScoringIntent.intent;
         var entities = response.entities;
@@ -25,10 +30,10 @@ bot.dialog('/', function(session) {
         switch (intent) {
             case 'Login':
                 console.log('... to Login intent');
-                //var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
+                var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
                 var card = new builder.SigninCard(session)
                     .text('Gmail (Google) Sign-in')
-                    .button('Sign-in', google.generateAuthURL());
+                    .button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
 
                 var msg = new builder.Message(session).addAttachment(card);
 
@@ -43,7 +48,7 @@ bot.dialog('/', function(session) {
                 break;
             default:
                 //if ((typeof session.message.address.conversation.name !== 'undefined') && (session.message.address.channelId != 'webchat')) delete session.message.address.conversation;
-                session.send('Hey')
+                session.send('Default message')
                 break;
         }
     });
