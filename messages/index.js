@@ -54,6 +54,26 @@ bot.dialog('/', function(session) {
     });
 });
 
+bot.on('trigger', function(message) {
+    //console.log('Triggered');
+    // Handle message from trigger function
+    var queuedMessage = message.value;
+    var address = queuedMessage.address;
+    var payload = JSON.parse(queuedMessage.text); // will have .origin and .intent
+
+    // Becomes a PM to Slack when .conversation is removed
+    if (address.channelId != 'webchat') delete address.conversation;
+
+    var reply = new builder.Message()
+        .address(address)
+        //.text('This is coming from the trigger: ' + JSON.stringify(message));
+        .text('TEST');
+
+    // Send it to the channel
+    bot.send(reply);
+
+});
+
 if (useEmulator) {
     var restify = require('restify');
     var server = restify.createServer();
