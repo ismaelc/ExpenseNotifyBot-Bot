@@ -59,7 +59,8 @@ bot.on('trigger', function(message) {
     // Handle message from trigger function
     var queuedMessage = message.value;
     var address = queuedMessage.address;
-    var payload = JSON.parse(queuedMessage.text); // will have .origin and .intent
+    //var payload = JSON.parse(queuedMessage.text); // will have .origin and .intent
+    var payload = queuedMessage.payload;
 
     // Becomes a PM to Slack when .conversation is removed
     if (address.channelId != 'webchat') delete address.conversation;
