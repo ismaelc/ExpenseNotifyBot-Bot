@@ -65,10 +65,22 @@ bot.on('trigger', function(message) {
     // Becomes a PM to Slack when .conversation is removed
     if (address.channelId != 'webchat') delete address.conversation;
 
-    var reply = new builder.Message()
-        .address(address)
-        //.text('This is coming from the trigger: ' + JSON.stringify(message));
-        .text('TEST');
+    switch (payload.origin) {
+        case 'bot':
+            if (payload.intent == 'login') {
+                var reply = new builder.Message()
+                    .address(address)
+                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .text('You have logged in!');
+            }
+            break;
+        default:
+            var reply = new builder.Message()
+                .address(address)
+                //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                .text('No intent recognized - this is a default reply');
+            break;
+    }
 
     // Send it to the channel
     bot.send(reply);
