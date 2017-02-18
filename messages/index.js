@@ -33,9 +33,7 @@ bot.dialog('/', function(session) {
                 var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
                 var card = new builder.SigninCard(session)
                     .text('Gmail (Google) Sign-in')
-                    .button('Sign-in', google.generateAuthURL({
-                        access_type: 'offline'
-                    }) + '&state=' + stateObjectBuffer);
+                    .button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
 
                 var msg = new builder.Message(session).addAttachment(card);
 
