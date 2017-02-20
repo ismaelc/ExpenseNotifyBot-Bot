@@ -74,6 +74,14 @@ bot.on('trigger', function(message) {
                     .text('You have logged in!');
             }
             break;
+        case 'process_mail':
+            if (payload.intent == 'ask_user_if_receipt') {
+                var reply = new builder.Message()
+                    .address(address)
+                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .text('Message from process_mail');
+            }
+            break;
         default:
             var reply = new builder.Message()
                 .address(address)
