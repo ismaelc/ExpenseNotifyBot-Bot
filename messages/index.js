@@ -67,6 +67,7 @@ bot.on('trigger', function(message) {
     var address = queuedMessage.address;
     //var payload = JSON.parse(queuedMessage.text); // will have .origin and .intent
     var payload = queuedMessage.payload;
+    if((typeof payload) == 'string') payload = JSON.parse(payload);
 
     // Becomes a PM to Slack when .conversation is removed
     if (address.channelId != 'webchat') delete address.conversation;
@@ -120,7 +121,7 @@ bot.on('trigger', function(message) {
                 var reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
-                    .text('Please login again');            
+                    .text('Please login again');
             }
             break;
         default:
