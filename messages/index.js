@@ -45,13 +45,16 @@ bot.dialog('/', function(session) {
 
                 session.send(msg);
                 break;
+            case 'Logout':
+                session.send('Logged out');
+                break;
             case 'Greet':
                 var greetings = ['Hey', 'Yo', 'Whatup', 'Hiya', 'Yeah?', 'Lol', 'Upupdowndown', 'Bonjour', 'Hola', 'Guten tag', 'Ciao', 'Kamusta', 'Namaste'];
                 session.send(greetings[Math.floor(Math.random() * greetings.length)]);
                 break;
             default:
                 //if ((typeof session.message.address.conversation.name !== 'undefined') && (session.message.address.channelId != 'webchat')) delete session.message.address.conversation;
-                session.send('Default message')
+                session.send('Default message');
                 break;
         }
     });
