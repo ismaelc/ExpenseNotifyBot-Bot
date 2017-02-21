@@ -27,6 +27,9 @@ bot.dialog('/', function(session) {
         var intent = response.topScoringIntent.intent;
         var entities = response.entities;
 
+        // TODO: Need logout that would not only delete DB entry,
+        // but actually expire tokens so that they would need to
+        // login and connect accounts again
         switch (intent) {
             case 'Login':
                 console.log('... to Login intent');
@@ -65,10 +68,11 @@ bot.on('trigger', function(message) {
     // Becomes a PM to Slack when .conversation is removed
     if (address.channelId != 'webchat') delete address.conversation;
 
+    var reply;
     switch (payload.origin) {
         case 'bot':
             if (payload.intent == 'login') {
-                var reply = new builder.Message()
+                reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .text('You have logged in!');
@@ -76,10 +80,38 @@ bot.on('trigger', function(message) {
             break;
         case 'process_mail':
             if (payload.intent == 'ask_user_if_receipt') {
-                var reply = new builder.Message()
+                /*
+                reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
-                    .text('Message from process_mail');
+                    .text('Message from process_mail: ' + JSON.stringify(payload));
+                */
+                var card = new builder.ReceiptCard()
+                    .title(payload.valid_mail.subject)
+                    .facts([
+                        builder.Fact.create(null, payload.valid_mail.confirmed_date, 'Date')
+                        //builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
+                    ])
+                    .items([
+                        /*
+                        builder.ReceiptItem.create(null, '$ 38.45', 'Data Transfer')
+                        .quantity(368)
+                        .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/traffic-manager.png')),
+                        */
+                        builder.ReceiptItem.create(null, payload.valid_mail.confirmed_amount.replace('$', '$ '), 'Amount')
+                        .quantity(1)
+                        .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
+                    ])
+                    .tax('$ 0.00')
+                    .total(payload.valid_mail.confirmed_amount.replace('$', '$ '))
+                    .buttons([
+                        builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
+                        .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png')
+                    ]);
+
+                reply = new builder.Message()
+                    .address(queuedMessage.address)
+                    .addAttachment(card);
             }
             break;
         default:
