@@ -98,12 +98,12 @@ bot.on('trigger', function(message) {
                         .quantity(368)
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/traffic-manager.png')),
                         */
-                        builder.ReceiptItem.create(null, payload.valid_mail.confirmed_amount.replace('$', '$ '), 'Amount')
+                        builder.ReceiptItem.create(null, payload.valid_mail.confirmed_amount, 'Amount')
                         .quantity(1)
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
                     ])
-                    .tax('$ 0.00')
-                    .total(payload.valid_mail.confirmed_amount.replace('$', '$ '))
+                    .tax('$0.00')
+                    .total(payload.valid_mail.confirmed_amount)
                     .buttons([
                         builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
                         .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png')
