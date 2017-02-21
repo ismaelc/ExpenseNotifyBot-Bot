@@ -116,6 +116,12 @@ bot.on('trigger', function(message) {
                     .address(queuedMessage.address)
                     .addAttachment(card);
             }
+            else if(payload.intent == 'ask_user_to_relogin') {
+                var reply = new builder.Message()
+                    .address(address)
+                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .text('Please login again');            
+            }
             break;
         default:
             var reply = new builder.Message()
