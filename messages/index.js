@@ -69,8 +69,6 @@ bot.dialog('/', function(session) {
                      'queue_name': 'js-queue-items-from-bot'
                  }
 
-                 context.log('Queued messages: ' + JSON.stringify(queuedMessages));
-
                  var promisedQueuePush = queuedMessages.map(
                      function (message) { return queue.pushMessageQFunc2(message, storage); }
                  );
