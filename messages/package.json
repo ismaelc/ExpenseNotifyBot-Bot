@@ -9,7 +9,8 @@
     "request": "2.71.0",
     "googleapis": "^15.1.0",
     "async": "2.1.4",
-    "html-to-text": "3.0.0"
+    "html-to-text": "3.0.0",
+    "azure-storage": "2.0.0"
   },
   "devDependencies": {
       "restify": "^4.1.1"
