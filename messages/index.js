@@ -4,6 +4,7 @@ var botbuilder_azure = require("botbuilder-azure");
 var luis = require('./luis_stub.js');
 var google = require('./google.js');
 //var db = require('./documentdb.js');
+var queue = require('./queue.js');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -62,6 +63,8 @@ bot.dialog('/', function(session) {
                      address: null,
                      payload: payload
                  };
+
+                 var queuedMessages = [];
                  queuedMessages.push(queuedMessage);
 
                  var storage = {
