@@ -155,6 +155,12 @@ bot.on('trigger', function(message) {
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .text('You have logged in!');
             }
+            else if(payload.intent == 'logout_request') {
+                reply = new builder.Message()
+                    .address(address)
+                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .text('You have been logged out.');            
+            }
             break;
         case 'process_mail':
             if (payload.intent == 'ask_user_if_receipt') {
