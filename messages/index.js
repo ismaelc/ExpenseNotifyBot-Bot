@@ -159,7 +159,7 @@ bot.on('trigger', function(message) {
                 reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
-                    .text('You have been logged out.');            
+                    .text('You have been logged out.');
             }
             break;
         case 'process_mail':
@@ -171,7 +171,8 @@ bot.on('trigger', function(message) {
                     .text('Message from process_mail: ' + JSON.stringify(payload));
                 */
                 var card = new builder.ReceiptCard()
-                    .title(payload.valid_mail.subject)
+                    //.title(payload.valid_mail.subject)
+                    .title('Short')
                     .facts([
                         builder.Fact.create(null, payload.valid_mail.confirmed_date, 'Date')
                         //builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
