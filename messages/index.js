@@ -53,6 +53,7 @@ bot.dialog('/', function(session) {
 
                 var address = session.message.address;
 
+                // What to send
                 var payload = {
                      'origin': 'bot',
                      'intent': 'logout_request',
@@ -67,11 +68,13 @@ bot.dialog('/', function(session) {
                  var queuedMessages = [];
                  queuedMessages.push(queuedMessage);
 
+                 // Where to send
                  var storage = {
                      'account_name': 'expensenotifybotd3giz3_STORAGE',
                      'queue_name': 'js-queue-items-from-bot'
                  }
 
+                 // Send it
                  var promisedQueuePush = queuedMessages.map(
                      function (message) { return queue.pushMessageQFunc2(message, storage); }
                  );
@@ -171,8 +174,8 @@ bot.on('trigger', function(message) {
                     .text('Message from process_mail: ' + JSON.stringify(payload));
                 */
                 var card = new builder.ReceiptCard()
-                    //.title(payload.valid_mail.subject)
-                    .title('Short')
+                    .title(payload.valid_mail.subject)
+                    //.title('Short')
                     .facts([
                         builder.Fact.create(null, payload.valid_mail.confirmed_date, 'Date')
                         //builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
