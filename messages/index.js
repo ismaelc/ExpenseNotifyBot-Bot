@@ -4,7 +4,8 @@ var botbuilder_azure = require("botbuilder-azure");
 var luis = require('./luis_stub.js');
 var google = require('./google.js');
 //var db = require('./documentdb.js');
-var queue = require('./queue.js');
+//var queue = require('./queue.js');
+var azure = require('fast-azure-storage');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -55,16 +56,38 @@ bot.dialog('/', function(session) {
 
                 // What to send
                 var payload = {
-                     'origin': 'bot',
-                     'intent': 'logout_request',
-                     'bot_address': address
-                 };
+                    'origin': 'bot',
+                    'intent': 'logout_request',
+                    'bot_address': address
+                };
 
-                 var queuedMessage = {
-                     address: null,
-                     payload: payload
-                 };
+                var queuedMessage = {
+                    address: null,
+                    payload: payload
+                };
 
+                var queue = new azure.Queue({
+                    accountId: process.env['STORAGE_ACCOUNTID'],
+                    accessKey: process.env['STORAGE_ACCOUNTKEY']
+                });
+
+                // Create queue and insert message
+                queue.createQueue('js-queue-items-for-bot')
+                    .then(function() {
+                        return queue.putMessage('js-queue-items-for-bot',
+                            new Buffer(JSON.stringify(queuedMessage)).toString('base64'), {
+                                visibilityTimeout: 1, // Visible after 1 seconds
+                                messageTTL: 60 * 60 // Expires after 1 hour
+                            })
+                    })
+                    .then((msg) => {
+                        session.send('Logging you out...');
+                    })
+                    .catch((error) => {
+                        session.send('Error: ' + JSON.stringify(error));
+                    })
+
+                /*
                  var queuedMessages = [];
                  queuedMessages.push(queuedMessage);
 
@@ -87,6 +110,7 @@ bot.dialog('/', function(session) {
                      .catch((reason) => {
                          session.send('Error: ' + JSON.stringify(reason));
                      });
+                */
 
                 // Use this to query DB of matching bot-user
                 // Get/create database
@@ -144,7 +168,7 @@ bot.on('trigger', function(message) {
     var address = queuedMessage.address;
     //var payload = JSON.parse(queuedMessage.text); // will have .origin and .intent
     var payload = queuedMessage.payload;
-    if((typeof payload) == 'string') payload = JSON.parse(payload);
+    if ((typeof payload) == 'string') payload = JSON.parse(payload);
 
     // Becomes a PM to Slack when .conversation is removed
     if (address.channelId != 'webchat') delete address.conversation;
@@ -157,8 +181,7 @@ bot.on('trigger', function(message) {
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .text('You have logged in!');
-            }
-            else if(payload.intent == 'logout_request') {
+            } else if (payload.intent == 'logout_request') {
                 reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
@@ -203,8 +226,7 @@ bot.on('trigger', function(message) {
                 reply = new builder.Message()
                     .address(queuedMessage.address)
                     .addAttachment(card);
-            }
-            else if(payload.intent == 'ask_user_to_relogin') {
+            } else if (payload.intent == 'ask_user_to_relogin') {
                 var reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
