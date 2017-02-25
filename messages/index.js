@@ -4,7 +4,7 @@ var botbuilder_azure = require("botbuilder-azure");
 var luis = require('./luis_stub.js');
 var google = require('./google.js');
 //var db = require('./documentdb.js');
-//var queue = require('./queue.js');
+var queue = require('./queue.js');
 var azure = require('fast-azure-storage');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
@@ -66,6 +66,7 @@ bot.dialog('/', function(session) {
                     payload: payload
                 };
 
+                /*
                 var queue = new azure.Queue({
                     accountId: process.env['STORAGE_ACCOUNTID'],
                     accessKey: process.env['STORAGE_ACCOUNTKEY']
@@ -86,8 +87,9 @@ bot.dialog('/', function(session) {
                     .catch((error) => {
                         session.send('Error: ' + JSON.stringify(error));
                     });
+                */
 
-                /*
+
                  var queuedMessages = [];
                  queuedMessages.push(queuedMessage);
 
@@ -110,7 +112,7 @@ bot.dialog('/', function(session) {
                      .catch((reason) => {
                          session.send('Error: ' + JSON.stringify(reason));
                      });
-                */
+
 
                 // Use this to query DB of matching bot-user
                 // Get/create database
