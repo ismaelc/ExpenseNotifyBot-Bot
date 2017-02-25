@@ -192,7 +192,7 @@ bot.on('trigger', function(message) {
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
 
                     ])
-                    .tax('$ 0.00')
+                    //.tax('$ 0.00')
                     .total(payload.valid_mail.confirmed_amount.replace('$', '$ '))
                     //.total('$ 9.99')
                     .buttons([
