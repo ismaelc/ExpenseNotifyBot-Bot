@@ -4,7 +4,7 @@ var botbuilder_azure = require("botbuilder-azure");
 var luis = require('./luis_stub.js');
 var google = require('./google.js');
 //var db = require('./documentdb.js');
-var queue = require('./queue.js');
+//var queue = require('./queue.js');
 var azure = require('fast-azure-storage');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
@@ -66,10 +66,10 @@ bot.dialog('/', function(session) {
                     payload: payload
                 };
 
-                /*
+
                 var queue = new azure.Queue({
                     accountId: process.env['STORAGE_ACCOUNTID'],
-                    accessKey: process.env['STORAGE_ACCOUNTKEY']
+                    accessKey: process.env['STORAGE_ACCESSKEY']
                 });
 
                 // Create queue and insert message
@@ -77,8 +77,8 @@ bot.dialog('/', function(session) {
                     .then(function() {
                         return queue.putMessage('js-queue-items-from-bot',
                             new Buffer(JSON.stringify(queuedMessage)).toString('base64'), {
-                                visibilityTimeout: 1, // Visible after 1 seconds
-                                messageTTL: 60 * 60 // Expires after 1 hour
+                                //visibilityTimeout: 1, // Visible after 1 seconds
+                                //messageTTL: 60 * 60 // Expires after 1 hour
                             })
                     })
                     .then((msg) => {
@@ -87,31 +87,34 @@ bot.dialog('/', function(session) {
                     .catch((error) => {
                         session.send('Error: ' + JSON.stringify(error));
                     });
+
+
+                /*
+                var queuedMessages = [];
+                queuedMessages.push(queuedMessage);
+
+                // Where to send
+                var storage = {
+                    'account_name': 'expensenotifybotd3giz3_STORAGE',
+                    'queue_name': 'js-queue-items-from-bot'
+                }
+
+                // Send it
+                var promisedQueuePush = queuedMessages.map(
+                    function(message) {
+                        return queue.pushMessageQFunc2(message, storage);
+                    }
+                );
+
+                Promise.all(promisedQueuePush)
+                    .then((responses) => {
+                        //context.log('Queue push responses: ' + JSON.stringify(responses))
+                        session.send('Logging you out...');
+                    })
+                    .catch((reason) => {
+                        session.send('Error: ' + JSON.stringify(reason));
+                    });
                 */
-
-
-                 var queuedMessages = [];
-                 queuedMessages.push(queuedMessage);
-
-                 // Where to send
-                 var storage = {
-                     'account_name': 'expensenotifybotd3giz3_STORAGE',
-                     'queue_name': 'js-queue-items-from-bot'
-                 }
-
-                 // Send it
-                 var promisedQueuePush = queuedMessages.map(
-                     function (message) { return queue.pushMessageQFunc2(message, storage); }
-                 );
-
-                 Promise.all(promisedQueuePush)
-                     .then((responses) => {
-                         //context.log('Queue push responses: ' + JSON.stringify(responses))
-                         session.send('Logging you out...');
-                     })
-                     .catch((reason) => {
-                         session.send('Error: ' + JSON.stringify(reason));
-                     });
 
 
                 // Use this to query DB of matching bot-user
