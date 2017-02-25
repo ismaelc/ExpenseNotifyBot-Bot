@@ -72,9 +72,9 @@ bot.dialog('/', function(session) {
                 });
 
                 // Create queue and insert message
-                queue.createQueue('js-queue-items-for-bot')
+                queue.createQueue('js-queue-items-from-bot')
                     .then(function() {
-                        return queue.putMessage('js-queue-items-for-bot',
+                        return queue.putMessage('js-queue-items-from-bot',
                             new Buffer(JSON.stringify(queuedMessage)).toString('base64'), {
                                 visibilityTimeout: 1, // Visible after 1 seconds
                                 messageTTL: 60 * 60 // Expires after 1 hour
@@ -85,7 +85,7 @@ bot.dialog('/', function(session) {
                     })
                     .catch((error) => {
                         session.send('Error: ' + JSON.stringify(error));
-                    })
+                    });
 
                 /*
                  var queuedMessages = [];
