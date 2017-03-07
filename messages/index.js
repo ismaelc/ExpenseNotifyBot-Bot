@@ -205,7 +205,7 @@ bot.on('trigger', function(message) {
                     .title(payload.valid_mail.subject)
                     //.title('Short')
                     .facts([
-                        builder.Fact.create(null, payload.valid_mail.confirmed_date, 'Date')
+                        builder.Fact.create(null, payload.valid_mail.prime_date, 'Date')
                         //builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
                     ])
                     .items([
@@ -215,13 +215,13 @@ bot.on('trigger', function(message) {
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/traffic-manager.png')),
                         */
 
-                        builder.ReceiptItem.create(null, payload.valid_mail.confirmed_amount.replace('$', '$ '), 'Amount')
+                        builder.ReceiptItem.create(null, payload.valid_mail.prime_amount.replace('$', '$ '), 'Amount')
                         .quantity(1)
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
 
                     ])
                     //.tax('$ 0.00')
-                    .total(payload.valid_mail.confirmed_amount.replace('$', '$ '))
+                    .total(payload.valid_mail.prime_amount.replace('$', '$ '))
                     //.total('$ 9.99')
                     .buttons([
                         builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
