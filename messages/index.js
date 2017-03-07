@@ -204,22 +204,23 @@ bot.on('trigger', function(message) {
                 */
 
                 var card = new builder.ReceiptCard()
-                    .title(payload.valid_mail.subject)
-                    //.title('Short')
+                    //.title(payload.valid_mail.subject)
+                    .title('Short')
                     .facts([
-                        builder.Fact.create(null, payload.valid_mail.prime_date, 'Date')
-                        //builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
+                        //builder.Fact.create(null, payload.valid_mail.prime_date, 'Date')
+                        builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
                     ])
                     .items([
 
-                        builder.ReceiptItem.create(null, payload.valid_mail.prime_amount.replace('$', '$ '), 'Amount')
+                        //builder.ReceiptItem.create(null, payload.valid_mail.prime_amount.replace('$', '$ '), 'Amount')
+                        builder.ReceiptItem.create(null, '$4.50'.replace('$', '$ '), 'Amount')
                         .quantity(1)
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
 
                     ])
-                    //.tax('$ 0.00')
-                    .total(payload.valid_mail.prime_amount.replace('$', '$ '))
-                    //.total('$ 9.99')
+                    .tax('$ 0.00')
+                    //.total(payload.valid_mail.prime_amount.replace('$', '$ '))
+                    .total('$ 9.99')
                     .buttons([
                         builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
                         .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png')
@@ -228,7 +229,7 @@ bot.on('trigger', function(message) {
                 reply = new builder.Message()
                     .address(queuedMessage.address)
                     .addAttachment(card);
-                
+
             } else if (payload.intent == 'ask_user_to_relogin') {
                 var reply = new builder.Message()
                     .address(address)
