@@ -204,8 +204,8 @@ bot.on('trigger', function(message) {
                 */
 
                 var card = new builder.ReceiptCard()
-                    //.title(payload.valid_mail.subject)
-                    .title('Short')
+                    .title(payload.valid_mail.subject)
+                    //.title('Short')
                     .facts([
                         //builder.Fact.create(null, payload.valid_mail.prime_date, 'Date')
                         builder.Fact.create(null, 'VISA 5555-****', 'Payment Method')
