@@ -98,7 +98,7 @@ bot.dialog('/', function(session) {
                 break;
         }
     });
-    
+
 });
 
 bot.on('trigger', function(message) {
@@ -140,7 +140,7 @@ bot.on('trigger', function(message) {
 
 
                 var card = new builder.ReceiptCard()
-                    .title(payload.valid_mail.subject)
+                    .title(truncate(payload.valid_mail.subject))
                     //.title('Short')
                     .facts([
                         builder.Fact.create(null, payload.valid_mail.prime_date, 'Date')
@@ -208,6 +208,16 @@ if (useEmulator) {
         listener(context, req);
     }
 
-    module.exports = { default: withLogging }
+    module.exports = {
+        default: withLogging
+    }
 
 }
+
+function truncate(string) {
+    var max = 35;
+    if (string.length > max)
+        return string.substring(0, max) + '...';
+    else
+        return string;
+};
