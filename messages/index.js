@@ -219,7 +219,7 @@ bot.on('trigger', function(message) {
 
                     ])
                     //.tax('$ 0.00')
-                    .total(parseFloat(payload.valid_mail.prime_amount).replace('$', '$ '))
+                    .total(payload.valid_mail.prime_amount.replace('$', '$ '))
                     //.total('$ 9.99')
                     .buttons([
                         builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
