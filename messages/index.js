@@ -218,9 +218,9 @@ bot.on('trigger', function(message) {
                         .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
 
                     ])
-                    .tax('$ 0.00')
-                    //.total(payload.valid_mail.prime_amount.replace('$', '$ '))
-                    .total('$ 9.99')
+                    //.tax('$ 0.00')
+                    .total(payload.valid_mail.prime_amount.replace('$', '$ '))
+                    //.total('$ 9.99')
                     .buttons([
                         builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
                         .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png')
