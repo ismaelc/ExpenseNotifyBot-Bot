@@ -19,8 +19,8 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 var bot = new builder.UniversalBot(connector);
 
 bot.dialog('/', function(session) {
-    //session.send('You said ' + session.message.text);
-
+    session.send('You said ' + session.message.text);
+    /*
     var stateObject = {
         address: session.message.address,
         text: session.message.text
@@ -87,71 +87,6 @@ bot.dialog('/', function(session) {
                         session.send('Error: ' + JSON.stringify(error));
                     });
 
-
-                /*
-                var queuedMessages = [];
-                queuedMessages.push(queuedMessage);
-
-                // Where to send
-                var storage = {
-                    'account_name': 'expensenotifybotd3giz3_STORAGE',
-                    'queue_name': 'js-queue-items-from-bot'
-                }
-
-                // Send it
-                var promisedQueuePush = queuedMessages.map(
-                    function(message) {
-                        return queue.pushMessageQFunc2(message, storage);
-                    }
-                );
-
-                Promise.all(promisedQueuePush)
-                    .then((responses) => {
-                        //context.log('Queue push responses: ' + JSON.stringify(responses))
-                        session.send('Logging you out...');
-                    })
-                    .catch((reason) => {
-                        session.send('Error: ' + JSON.stringify(reason));
-                    });
-                */
-
-
-                // Use this to query DB of matching bot-user
-                // Get/create database
-                /*
-                db.getDatabase()
-                    // Get/create collection
-                    .then(() => db.getCollection())
-                    .then(() => {
-                        // Query db based on passed state - token/channelId/serviceUrl
-                        return db.queryCollection(
-                            //auth_doc.google_auth.credentials.access_token
-                            address.serviceUrl,
-                            address.channelId,
-                            address.user.id
-                        );
-                    }) // Get matching token/doc
-                    .then((doc_arr) => {
-                        if (doc_arr.length > 0) {
-                            var doc = doc_arr[0];
-
-                        }
-                        else {
-                            // No matching bot-user, reply to user with some message
-                            session.send('Can\'t logout if you\'re not logged in ;)');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log('Error: ' + JSON.stringify(error));
-                    });
-                */
-
-
-                // Get tokens
-                // Use tokens to revokeCredentials
-                // Delete DB entry
-
-                //session.send('Logged out');
                 break;
             case 'Greet':
                 var greetings = ['Hey', 'Yo', 'Whatup', 'Hiya', 'Yeah?', 'Lol', 'Upupdowndown', 'Bonjour', 'Hola', 'Guten tag', 'Ciao', 'Kamusta', 'Namaste'];
@@ -163,6 +98,7 @@ bot.dialog('/', function(session) {
                 break;
         }
     });
+    */
 });
 
 bot.on('trigger', function(message) {
@@ -270,5 +206,5 @@ if (useEmulator) {
         listener(context, req);
     }
 
-    module.exports = { default: withLogging }    
+    module.exports = { default: withLogging }
 }
