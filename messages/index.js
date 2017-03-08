@@ -66,7 +66,6 @@ bot.dialog('/', function(session) {
                     payload: payload
                 };
 
-
                 var queue = new azure.Queue({
                     accountId: process.env['STORAGE_ACCOUNTID'],
                     accessKey: process.env['STORAGE_ACCESSKEY']
@@ -230,7 +229,7 @@ bot.on('trigger', function(message) {
                 reply = new builder.Message()
                     .address(queuedMessage.address)
                     .addAttachment(card);
-                
+
 
             } else if (payload.intent == 'ask_user_to_relogin') {
                 var reply = new builder.Message()
