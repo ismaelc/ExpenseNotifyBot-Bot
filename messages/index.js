@@ -195,11 +195,11 @@ if (useEmulator) {
     });
     server.post('/api/messages', connector.listen());
 } else {
-    /*
+
     module.exports = {
         default: connector.listen()
     }
-    */
+    /*
     var listener = connector.listen();
     var withLogging = function(context, req) {
         console.log = context.log;
@@ -207,4 +207,5 @@ if (useEmulator) {
     }
 
     module.exports = { default: withLogging }
+    */
 }
