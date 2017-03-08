@@ -213,9 +213,9 @@ bot.on('trigger', function(message) {
                     .items([
 
                         //builder.ReceiptItem.create(null, payload.valid_mail.prime_amount.replace('$', '$ '), 'Amount')
-                        builder.ReceiptItem.create(null, '$4.50'.replace('$', '$ '), 'Amount')
-                        .quantity(1)
-                        .image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
+                        //builder.ReceiptItem.create(null, '$4.50'.replace('$', '$ '), 'Amount')
+                        //.quantity(1)
+                        //.image(builder.CardImage.create(null, 'https://github.com/amido/azure-vector-icons/raw/master/renders/cloud-service.png'))
 
                     ])
                     //.tax('$ 0.00')
