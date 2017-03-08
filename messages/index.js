@@ -19,8 +19,8 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 var bot = new builder.UniversalBot(connector);
 
 bot.dialog('/', function(session) {
-    session.send('You said ' + session.message.text);
-    /*
+    //session.send('You said ' + session.message.text);
+
     var stateObject = {
         address: session.message.address,
         text: session.message.text
@@ -98,7 +98,7 @@ bot.dialog('/', function(session) {
                 break;
         }
     });
-    */
+    
 });
 
 bot.on('trigger', function(message) {
@@ -196,10 +196,12 @@ if (useEmulator) {
     server.post('/api/messages', connector.listen());
 } else {
 
+    /*
     module.exports = {
         default: connector.listen()
     }
-    /*
+    */
+
     var listener = connector.listen();
     var withLogging = function(context, req) {
         console.log = context.log;
@@ -207,5 +209,5 @@ if (useEmulator) {
     }
 
     module.exports = { default: withLogging }
-    */
+
 }
