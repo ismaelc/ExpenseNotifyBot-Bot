@@ -196,13 +196,14 @@ bot.on('trigger', function(message) {
         case 'process_mail':
             if (payload.intent == 'ask_user_if_receipt') {
 
-                /*
+
                 reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .text('Message from process_mail: ' + JSON.stringify(payload));
-                */
+                
 
+                /*
                 var card = new builder.ReceiptCard()
                     .title(payload.valid_mail.subject)
                     //.title('Short')
@@ -229,6 +230,7 @@ bot.on('trigger', function(message) {
                 reply = new builder.Message()
                     .address(queuedMessage.address)
                     .addAttachment(card);
+                */
 
             } else if (payload.intent == 'ask_user_to_relogin') {
                 var reply = new builder.Message()
