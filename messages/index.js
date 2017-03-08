@@ -215,7 +215,7 @@ if (useEmulator) {
 }
 
 function truncate(string) {
-    var max = 35;
+    var max = 30;
     if (string.length > max)
         return string.substring(0, max) + '...';
     else
