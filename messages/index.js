@@ -138,6 +138,11 @@ bot.on('trigger', function(message) {
                     .text('Message from process_mail: ' + JSON.stringify(payload));
                 */
 
+                var quick_expense = {
+                    'title': payload.valid_mail.subject,
+                    'date': payload.valid_mail.prime_date,
+                    'amount': payload.valid_mail.prime_amount
+                }
 
                 var card = new builder.ReceiptCard()
                     .title(truncate(payload.valid_mail.subject))
@@ -158,8 +163,12 @@ bot.on('trigger', function(message) {
                     .total(payload.valid_mail.prime_amount.replace('$', '$ '))
                     //.total('$ 9.99')
                     .buttons([
+                        /*
                         builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
-                        .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png')
+                        .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png'),
+                        */
+                        builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur")
+
                     ]);
 
                 reply = new builder.Message()
@@ -186,6 +195,21 @@ bot.on('trigger', function(message) {
     bot.send(reply);
 
 });
+
+bot.dialog('/send_to_concur', [
+    function(session, args) {
+        var user_data = session.userData;
+
+        // args.data = Trip id
+        //session.endDialog(args.data);
+        var quick_expense = args.data;
+
+        session.send('QE data: ' + JSON.stringify(quick_expense));
+        session.endDialog();
+    }
+]);
+
+bot.beginDialogAction('send_to_concur', '/send_to_concur');
 
 if (useEmulator) {
     var restify = require('restify');
