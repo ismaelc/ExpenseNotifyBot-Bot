@@ -35,15 +35,24 @@ bot.dialog('/', function(session) {
         // login and connect accounts again
         switch (intent) {
             case 'Login':
-                //var
-
                 console.log('... to Login intent');
-                var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
-                var card = new builder.SigninCard(session)
-                    .text('Gmail (Google) Sign-in')
-                    .button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
 
-                var msg = new builder.Message(session).addAttachment(card);
+                var channelId = session.message.address.channelId;
+                var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
+                var signin = google.generateAuthURL() + '&state=' + stateObjectBuffer;
+                var msg;
+
+                // MS teams does not support Sign-in card, dumb it down
+                if (channelId == 'msteams') {
+                    msg = '[Gmail Sign-in](' + signin + ')';
+                } else {
+                    var card = new builder.SigninCard(session)
+                        .text('Gmail (Google) Sign-in')
+                        //.button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
+                        .button('Sign-in', signin);
+
+                    msg = new builder.Message(session).addAttachment(card);
+                }
 
                 // If message was typed in a group/channel, turn it into PM as this is login
                 if ((typeof session.message.address.conversation.name !== 'undefined') && (session.message.address.channelId != 'webchat')) delete session.message.address.conversation;
