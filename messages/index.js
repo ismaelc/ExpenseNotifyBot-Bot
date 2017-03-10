@@ -217,6 +217,7 @@ bot.on('trigger', function(message) {
                 var reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .textFormat('markdown')
                     .text('You need to login to Concur first - [link](https://test.com)');
             }
             break;
