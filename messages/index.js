@@ -122,7 +122,10 @@ bot.on('trigger', function(message) {
     if ((typeof payload) == 'string') payload = JSON.parse(payload);
 
     // Becomes a PM to Slack when .conversation is removed
-    if ((address.channelId != 'webchat') && (address.channelId != 'msteams')) delete address.conversation;
+    if ((address.channelId != 'webchat') &&
+        (address.channelId != 'msteams')
+    )
+        delete address.conversation;
 
     var reply;
     switch (payload.origin) {
@@ -155,6 +158,8 @@ bot.on('trigger', function(message) {
                     'amount': payload.valid_mail.prime_amount
                 }
 
+                /*
+                // This is a receipt card, but doesn't work for Teams
                 var card = new builder.ReceiptCard()
                     .title(truncate(payload.valid_mail.subject))
                     //.title('Short')
@@ -174,12 +179,24 @@ bot.on('trigger', function(message) {
                     .total(payload.valid_mail.prime_amount.replace('$', '$ '))
                     //.total('$ 9.99')
                     .buttons([
-                        /*
-                        builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
-                        .image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png'),
-                        */
+
+                        //builder.CardAction.openUrl(null, 'https://azure.microsoft.com/en-us/pricing/', 'Send to Concur')
+                        //.image('https://raw.githubusercontent.com/amido/azure-vector-icons/master/renders/microsoft-azure.png'),
+
                         builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur")
 
+                    ]);
+                */
+
+                var card = new builder.ThumbnailCard()
+                    .title(payload.valid_mail.subject)
+                    .subtitle(payload.valid_mail.prime_date)
+                    .text('Total: $ ' + payload.valid_mail.prime_amount.replace('$', '$ '))
+                    .images([
+                        builder.CardImage.create(session, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
+                    ])
+                    .buttons([
+                        builder.CardAction.openUrl(session, 'https://docs.botframework.com/en-us/', 'Send to Concur')
                     ]);
 
                 reply = new builder.Message()
