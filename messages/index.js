@@ -212,6 +212,14 @@ bot.on('trigger', function(message) {
                     .text('Please login again');
             }
             break;
+        case 'trigger_frombot':
+            if(payload.intent == 'login_request_concur') {
+                var reply = new builder.Message()
+                    .address(address)
+                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .text('You need to login to Concur first - [link](link)');
+            }
+            break;
         default:
             var reply = new builder.Message()
                 .address(address)
@@ -225,6 +233,7 @@ bot.on('trigger', function(message) {
 
 });
 
+// Click handler for 'Send to Concur'
 bot.dialog('/send_to_concur', [
     function(session, args) {
         var user_data = session.userData;
