@@ -1,7 +1,7 @@
 var CONCUR_CLIENT_ID = process.env.CONCUR_CLIENT_ID;
 var CONCUR_SECRET = process.env.CONCUR_SECRET;
 var CONCUR_HOST = 'https://us-rqa3.api.concursolutions.com/';
-var REDIRECT_URI = process.env.REDIRECT_URI;
+var CONCUR_REDIRECT_URI = process.env.CONCUR_REDIRECT_URI;
 var SCOPE = 'IMAGE RCTIMG receipts.write';
 
 const oauth2 = require('simple-oauth2').create({
@@ -16,7 +16,7 @@ const oauth2 = require('simple-oauth2').create({
   }
 });
 
-const redirect_uri = REDIRECT_URI;
+const redirect_uri = CONCUR_REDIRECT_URI;
 
 
 function generateAuthURL() {
@@ -25,7 +25,7 @@ function generateAuthURL() {
 
     return CONCUR_HOST + 'oauth2/v0/authorize?' +
         '&client_id=' + CONCUR_CLIENT_ID +
-        '&redirect_url=' + REDIRECT_URI +
+        '&redirect_url=' + CONCUR_REDIRECT_URI +
         '&scope=' + SCOPE +
         '&response_type=code' +
         '&state'
