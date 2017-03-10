@@ -35,6 +35,8 @@ bot.dialog('/', function(session) {
         // login and connect accounts again
         switch (intent) {
             case 'Login':
+                //var
+
                 console.log('... to Login intent');
                 var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
                 var card = new builder.SigninCard(session)
@@ -94,7 +96,7 @@ bot.dialog('/', function(session) {
                 break;
             default:
                 //if ((typeof session.message.address.conversation.name !== 'undefined') && (session.message.address.channelId != 'webchat')) delete session.message.address.conversation;
-                session.send('Default message');
+                session.send('Default message (debug): ' + JSON.stringify(session.message.address));
                 break;
         }
     });
@@ -199,13 +201,51 @@ bot.on('trigger', function(message) {
 bot.dialog('/send_to_concur', [
     function(session, args) {
         var user_data = session.userData;
-
-        // args.data = Trip id
-        //session.endDialog(args.data);
         var quick_expense = args.data;
 
+        // Send to queue-from-bot with instruction to quick expense
+        // ? where do we check if Concur is logged in - state or DB
+
+        var address = session.message.address;
+
+        var payload = {
+            'origin': 'bot',
+            'intent': 'quick_expense',
+            'bot_address': address
+        };
+
+        var queuedMessage = {
+            address: null,
+            payload: payload
+        };
+
+        var queue = new azure.Queue({
+            accountId: process.env['STORAGE_ACCOUNTID'],
+            accessKey: process.env['STORAGE_ACCESSKEY']
+        });
+
+        // Create queue and insert message
+        queue.createQueue('js-queue-items-from-bot')
+            .then(function() {
+                return queue.putMessage('js-queue-items-from-bot',
+                    new Buffer(JSON.stringify(queuedMessage)).toString('base64'), {
+                        //visibilityTimeout: 1, // Visible after 1 seconds
+                        //messageTTL: 60 * 60 // Expires after 1 hour
+                    })
+            })
+            .then((msg) => {
+                session.send('Sending quick expense to Concur...');
+                session.endDialog();
+            })
+            .catch((error) => {
+                session.send('Error (quick expense): ' + JSON.stringify(error));
+                session.endDialog();
+            });
+
+        /*
         session.send('QE data: ' + JSON.stringify(quick_expense));
         session.endDialog();
+        */
     }
 ]);
 
