@@ -192,7 +192,7 @@ bot.on('trigger', function(message) {
                 var buttons = [];
                 switch(address.channelId) {
                     case 'msteams':
-                        buttons.push(builder.CardAction.imBack(session, "<Message>", "<Button>"));
+                        buttons.push(builder.CardAction.imBack(null, "<Message>", "<Button>"));
                         break;
                     default:
                         buttons.push(builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur"));
