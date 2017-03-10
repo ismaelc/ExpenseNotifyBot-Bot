@@ -188,6 +188,17 @@ bot.on('trigger', function(message) {
                     ]);
                 */
 
+                // Determine the appropriate buttons for channels
+                var buttons = [];
+                switch(address.channelId) {
+                    case 'msteams':
+                        buttons.push(builder.CardAction.imBack(session, "<Message>", "<Button>"));
+                        break;
+                    default:
+                        buttons.push(builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur"));
+                        break;
+                }
+
                 var card = new builder.ThumbnailCard()
                     .title(payload.valid_mail.subject)
                     .subtitle(payload.valid_mail.prime_date)
@@ -195,10 +206,13 @@ bot.on('trigger', function(message) {
                     .images([
                         builder.CardImage.create(null, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
                     ])
+                    /*
                     .buttons([
                         //builder.CardAction.openUrl(null, 'https://docs.botframework.com/en-us/', 'Send to Concur')
                         builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur")
                     ]);
+                    */
+                    .buttons(buttons)
 
                 reply = new builder.Message()
                     .address(queuedMessage.address)
