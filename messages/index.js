@@ -122,7 +122,7 @@ bot.on('trigger', function(message) {
     if ((typeof payload) == 'string') payload = JSON.parse(payload);
 
     // Becomes a PM to Slack when .conversation is removed
-    //if (address.channelId != 'webchat') delete address.conversation;
+    if ((address.channelId != 'webchat') && (address.channelId != 'msteams')) delete address.conversation;
 
     var reply;
     switch (payload.origin) {
