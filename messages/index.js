@@ -196,7 +196,8 @@ bot.on('trigger', function(message) {
                         builder.CardImage.create(null, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
                     ])
                     .buttons([
-                        builder.CardAction.openUrl(null, 'https://docs.botframework.com/en-us/', 'Send to Concur')
+                        //builder.CardAction.openUrl(null, 'https://docs.botframework.com/en-us/', 'Send to Concur')
+                        builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur")
                     ]);
 
                 reply = new builder.Message()
