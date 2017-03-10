@@ -229,11 +229,15 @@ bot.on('trigger', function(message) {
             break;
         case 'trigger_frombot':
             if(payload.intent == 'login_request_concur') {
+                var stateObject = address;
+                var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
+                var signin = concur.generateAuthURL() + '&state=' + stateObjectBuffer;
+
                 var reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .textFormat('markdown')
-                    .text('You need to login to Concur first - [link](' + concur.generateAuthURL() + ')');
+                    .text('You need to login to Concur first - [link](' + signin + ')');
             }
             break;
         default:

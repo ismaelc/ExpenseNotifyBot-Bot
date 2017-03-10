@@ -27,8 +27,7 @@ function generateAuthURL() {
         '&client_id=' + CONCUR_CLIENT_ID +
         '&redirect_uri=' + CONCUR_REDIRECT_URI +
         '&scope=' + SCOPE +
-        '&response_type=code' +
-        '&state'
+        '&response_type=code';
 
 }
 
