@@ -25,7 +25,7 @@ function generateAuthURL() {
 
     return CONCUR_HOST + 'oauth2/v0/authorize?' +
         '&client_id=' + CONCUR_CLIENT_ID +
-        '&redirect_url=' + CONCUR_REDIRECT_URI +
+        '&redirect_uri=' + CONCUR_REDIRECT_URI +
         '&scope=' + SCOPE +
         '&response_type=code' +
         '&state'
