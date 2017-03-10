@@ -44,7 +44,7 @@ bot.dialog('/', function(session) {
 
                 // MS teams does not support Sign-in card, dumb it down
                 if (channelId == 'msteams') {
-                    msg = '[Gmail Sign-in](' + signin + ')';
+                    msg = '[Gmail (Google) Sign-in](' + signin + ')';
                 } else {
                     var card = new builder.SigninCard(session)
                         .text('Gmail (Google) Sign-in')
@@ -122,7 +122,7 @@ bot.on('trigger', function(message) {
     if ((typeof payload) == 'string') payload = JSON.parse(payload);
 
     // Becomes a PM to Slack when .conversation is removed
-    if (address.channelId != 'webchat') delete address.conversation;
+    //if (address.channelId != 'webchat') delete address.conversation;
 
     var reply;
     switch (payload.origin) {
