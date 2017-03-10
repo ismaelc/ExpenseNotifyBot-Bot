@@ -6,6 +6,7 @@ var google = require('./google.js');
 //var db = require('./documentdb.js');
 //var queue = require('./queue.js');
 var azure = require('fast-azure-storage');
+var concur = require('./concur.js');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -192,7 +193,7 @@ bot.on('trigger', function(message) {
                 var buttons = [];
                 switch(address.channelId) {
                     case 'msteams':
-                        buttons.push(builder.CardAction.imBack(null, "<Message>", "<Button>"));
+                        buttons.push(builder.CardAction.imBack(null, "<Message that LUIS can interpret>", "Send to Concur"));
                         break;
                     default:
                         buttons.push(builder.CardAction.dialogAction(null, "send_to_concur", quick_expense, "Send to Concur"));
@@ -232,7 +233,7 @@ bot.on('trigger', function(message) {
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .textFormat('markdown')
-                    .text('You need to login to Concur first - [link](https://test.com)');
+                    .text('You need to login to Concur first - [link](' + concur.generateAuthURL() + ')');
             }
             break;
         default:
