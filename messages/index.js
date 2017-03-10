@@ -191,7 +191,7 @@ bot.on('trigger', function(message) {
                 var card = new builder.ThumbnailCard()
                     .title(payload.valid_mail.subject)
                     .subtitle(payload.valid_mail.prime_date)
-                    .text('Total: $ ' + payload.valid_mail.prime_amount.replace('$', '$ '))
+                    .text('Total: ' + payload.valid_mail.prime_amount.replace('$', '$ '))
                     .images([
                         builder.CardImage.create(null, 'https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')
                     ])
