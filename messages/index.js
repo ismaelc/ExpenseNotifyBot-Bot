@@ -240,6 +240,32 @@ bot.on('trigger', function(message) {
                     .text('You need to login to Concur first - [link](' + signin + ')');
             }
             break;
+        case 'auth_page':
+            if(payload.intent == 'login_request_google') {
+
+                var stateObject = {
+                    address: address
+                }
+
+                var channelId = address.channelId;
+                var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
+                var signin = google.generateAuthURL() + '&state=' + stateObjectBuffer;
+                var msg;
+
+                // MS teams does not support Sign-in card, dumb it down
+                if (channelId == 'msteams') {
+                    msg = '[Gmail (Google) Sign-in](' + signin + ')';
+                } else {
+                    var card = new builder.SigninCard()
+                        .text('Gmail (Google) Sign-in')
+                        //.button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
+                        .button('Sign-in', signin);
+
+                    msg = new builder.Message().addAttachment(card);
+                }
+
+                reply = msg;               
+            }
         default:
             var reply = new builder.Message()
                 .address(address)
