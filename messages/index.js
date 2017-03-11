@@ -264,13 +264,13 @@ bot.on('trigger', function(message) {
                     msg = new builder.Message().addAttachment(card);
                 }
 
-                reply = msg;               
+                reply = msg;
             }
         default:
             var reply = new builder.Message()
                 .address(address)
                 //.text('This is coming from the trigger: ' + JSON.stringify(message));
-                .text('No intent recognized - this is a default reply');
+                .text('No intent recognized - this is a default reply: ' + JSON.stringify(payload));
             break;
     }
 
