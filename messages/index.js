@@ -129,6 +129,9 @@ bot.on('trigger', function(message) {
         delete address.conversation;
 
     var reply;
+
+    console.log('Payload rcvd by bot trigger: ' + JSON.stringify(payload));
+
     switch (payload.origin) {
         case 'bot':
             if (payload.intent == 'login') {
