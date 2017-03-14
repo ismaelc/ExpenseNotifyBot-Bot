@@ -225,7 +225,7 @@ bot.on('trigger', function(message) {
 
 
             } else if (payload.intent == 'ask_user_to_relogin') {
-                var reply = new builder.Message()
+                reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
                     .text('Please login again');
@@ -237,14 +237,24 @@ bot.on('trigger', function(message) {
                 var stateObject = address;
                 var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
                 var signin = concur.generateAuthURL() + '&state=' + stateObjectBuffer;
-                //var mdText = "You need to login to Concur first - [link](" + signin + ")";
-                var mdText = "This is a Google [test](http://google.com)";
 
-                var reply = new builder.Message()
-                    .address(address)
-                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
-                    .textFormat(builder.TextFormat.markdown)
-                    .text(mdText);
+                var channelId = address.channelId;
+
+                //TODO: For some reason, Slack won't render markdown properly on builder.Message
+                if (channelId == 'slack') {
+                    var card = new builder.SigninCard()
+                        .text('You need to login to Concur first')
+                        //.button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
+                        .button('Concur Sign-in', signin);
+                    reply = new builder.Message().addAttachment(card);
+                } else {
+                    var mdText = "You need to login to Concur first - [link](" + signin + ")";
+                    reply = new builder.Message()
+                        .address(address)
+                        //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                        .textFormat(builder.TextFormat.markdown)
+                        .text(mdText);
+                }
             }
             break;
         case 'auth_page':
@@ -274,7 +284,7 @@ bot.on('trigger', function(message) {
                 reply = msg;
             }
         default:
-            var reply = new builder.Message()
+            reply = new builder.Message()
                 .address(address)
                 //.text('This is coming from the trigger: ' + JSON.stringify(message));
                 .text('No intent recognized - this is a default reply: ' + JSON.stringify(payload));
