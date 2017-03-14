@@ -237,7 +237,8 @@ bot.on('trigger', function(message) {
                 var stateObject = address;
                 var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
                 var signin = concur.generateAuthURL() + '&state=' + stateObjectBuffer;
-                var mdText = "You need to login to Concur first - [link](" + signin + ")";
+                //var mdText = "You need to login to Concur first - [link](" + signin + ")";
+                var mdText = "This is a Google [test](http://google.com)";
 
                 var reply = new builder.Message()
                     .address(address)
