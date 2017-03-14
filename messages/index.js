@@ -233,6 +233,7 @@ bot.on('trigger', function(message) {
             break;
 
         case 'trigger_frombot':
+            // User is not logged in to Concur - bot asks user to login
             if(payload.intent == 'login_request_concur') {
                 var stateObject = address;
                 var stateObjectBuffer = new Buffer(JSON.stringify(stateObject)).toString('base64');
@@ -243,6 +244,7 @@ bot.on('trigger', function(message) {
                 //TODO: For some reason, Slack won't render markdown properly on builder.Message
                 if (channelId == 'slack') {
                     var card = new builder.SigninCard()
+                        .address(address)
                         .text('You need to login to Concur first')
                         //.button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
                         .button('Concur Sign-in', signin);
