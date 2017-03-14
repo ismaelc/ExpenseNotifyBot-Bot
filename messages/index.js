@@ -113,6 +113,7 @@ bot.dialog('/', function(session) {
 
 });
 
+// Triggered by 'for-bot'
 bot.on('trigger', function(message) {
     //console.log('Triggered');
     // Handle message from trigger function
@@ -230,6 +231,7 @@ bot.on('trigger', function(message) {
                     .text('Please login again');
             }
             break;
+
         case 'trigger_frombot':
             if(payload.intent == 'login_request_concur') {
                 var stateObject = address;
@@ -239,7 +241,7 @@ bot.on('trigger', function(message) {
                 var reply = new builder.Message()
                     .address(address)
                     //.text('This is coming from the trigger: ' + JSON.stringify(message));
-                    .textFormat('markdown')
+                    .textFormat(builder.TextFormat.markdown)
                     .text('You need to login to Concur first - [link](' + signin + ')');
             }
             break;
