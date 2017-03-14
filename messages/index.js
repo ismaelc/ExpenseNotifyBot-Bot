@@ -244,11 +244,12 @@ bot.on('trigger', function(message) {
                 //TODO: For some reason, Slack won't render markdown properly on builder.Message
                 if (channelId == 'slack') {
                     var card = new builder.SigninCard()
-                        .address(address)
                         .text('You need to login to Concur first')
                         //.button('Sign-in', google.generateAuthURL() + '&state=' + stateObjectBuffer);
                         .button('Concur Sign-in', signin);
-                    reply = new builder.Message().addAttachment(card);
+                    reply = new builder.Message()
+                        .address(address)
+                        .addAttachment(card);
                 } else {
                     var mdText = "You need to login to Concur first - [link](" + signin + ")";
                     reply = new builder.Message()
