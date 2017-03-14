@@ -148,6 +148,8 @@ bot.on('trigger', function(message) {
             }
             break;
         case 'process_mail':
+            // This displays to user the receipts to verify
+            // .. as well as the "Send to Concur" button
             if (payload.intent == 'ask_user_if_receipt') {
 
                 /*
@@ -259,6 +261,14 @@ bot.on('trigger', function(message) {
                         .text(mdText);
                 }
             }
+            else if(payload.intent == 'submit_qe_success') {
+                var mdText = "Expense successfully sent to Concur!";
+                reply = new builder.Message()
+                    .address(address)
+                    //.text('This is coming from the trigger: ' + JSON.stringify(message));
+                    .textFormat(builder.TextFormat.markdown)
+                    .text(mdText);
+            }
             break;
         case 'auth_page':
             if(payload.intent == 'login_request_google') {
@@ -313,7 +323,8 @@ bot.dialog('/send_to_concur', [
         var payload = {
             'origin': 'bot',
             'intent': 'quick_expense',
-            'bot_address': address
+            'bot_address': address,
+            'qe_data': quick_expense
         };
 
         var queuedMessage = {

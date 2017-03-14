@@ -5,19 +5,18 @@ var CONCUR_REDIRECT_URI = process.env.CONCUR_REDIRECT_URI;
 var SCOPE = 'IMAGE RCTIMG receipts.write';
 
 const oauth2 = require('simple-oauth2').create({
-  client: {
-    id: CONCUR_CLIENT_ID,
-    secret: CONCUR_SECRET
-  },
-  auth: {
-    tokenHost: CONCUR_HOST,
-    tokenPath: 'oauth2/v0/token/',
-    authorizePath: 'oauth2/v0/authorize/'
-  }
+    client: {
+        id: CONCUR_CLIENT_ID,
+        secret: CONCUR_SECRET
+    },
+    auth: {
+        tokenHost: CONCUR_HOST,
+        tokenPath: 'oauth2/v0/token/',
+        authorizePath: 'oauth2/v0/authorize/'
+    }
 });
 
 const redirect_uri = CONCUR_REDIRECT_URI;
-
 
 function generateAuthURL() {
 
@@ -31,4 +30,22 @@ function generateAuthURL() {
 
 }
 
+function getToken(code, callback) {
+    const options = {
+        code,
+        redirect_uri
+    };
+    oauth2.authorizationCode.getToken(options, (error, result) => {
+        if (error) {
+            debug('Access Token Error', error.message);
+            callback('Authentication failed, please try again.', null);
+        }
+        //console.log('The resulting token: ', result);
+        const token = oauth2.accessToken.create(result);
+        debug('Received token ' + JSON.stringify(token));
+        callback(null, token);
+    });
+}
+
 exports.generateAuthURL = generateAuthURL;
+exports.getToken = getToken;
